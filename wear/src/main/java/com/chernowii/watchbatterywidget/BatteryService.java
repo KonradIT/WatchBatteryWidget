@@ -61,7 +61,7 @@ public class BatteryService extends Service {
                 while(true)
                 {
                     try {
-                        Thread.sleep(60000);
+                        Thread.sleep(180000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -163,7 +163,7 @@ public class BatteryService extends Service {
                 while(true)
                 {
                     try {
-                        Thread.sleep(60000);
+                        Thread.sleep(180000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
