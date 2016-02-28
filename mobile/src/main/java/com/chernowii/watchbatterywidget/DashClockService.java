@@ -28,7 +28,7 @@ public class DashClockService extends DashClockExtension {
                 .visible(true)
                 .icon(R.drawable.dashclockicon)
                 .status("Watch Battery for DashClock")
-                .expandedTitle("Battery Level:" + batteryLevel)
+                .expandedTitle("Battery Level: " + batteryLevel + "%")
                 .expandedBody(charging));
     }
 }
