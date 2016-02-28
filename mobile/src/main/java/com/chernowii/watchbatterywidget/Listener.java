@@ -22,10 +22,12 @@ public class Listener extends WearableListenerService {
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.watch_widget);
         ComponentName thisWidget = new ComponentName(context, WatchWidget.class);
-        String batterystatus = messageEvent.getPath();
-        String chargingstatus = null;
-        remoteViews.setTextViewText(R.id.battery,batterystatus + "%");
+        String chargingstatus = messageEvent.getPath();
         remoteViews.setTextViewText(R.id.charging,chargingstatus);
         appWidgetManager.updateAppWidget(thisWidget, remoteViews);
+        if (messageEvent.getPath().equals("battery")){
+            remoteViews.setTextViewText(R.id.battery,messageEvent.getData() + "%");
+        }
     }
+
 }

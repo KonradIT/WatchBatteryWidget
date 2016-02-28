@@ -55,18 +55,24 @@ public class BatteryService extends Service {
         Toast.makeText(this, "Sending battery status!", Toast.LENGTH_LONG).show();
         sendBatteryStatus();
 
-        handler = new Handler();
-        runnable = new Runnable() {
+        new Thread(new Runnable(){
             public void run() {
-                sendBatteryStatus();
-                handler.postDelayed(runnable, 120000);
-            }
-        };
+                // TODO Auto-generated method stub
+                while(true)
+                {
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    sendBatteryStatus();
+                }
 
-        handler.postDelayed(runnable, 120000);
+            }
+        }).start();
 
     }
-    private void getNodes() {
+    private void getNodes(final String message, final String status) {
         Wearable.NodeApi.getConnectedNodes(mGoogleApiClient).setResultCallback(
                 new ResultCallback<NodeApi.GetConnectedNodesResult>() {
                     @Override
@@ -77,16 +83,16 @@ public class BatteryService extends Service {
                             Log.d(TAG, node.getId().toString());
                         }
                         Log.d(TAG, results.toString());
-                        sendMessageApi(results);
+                        sendMessageApi(results, message, status);
                     }
                 }
         );
     }
 
-    private void sendMessageApi(Collection<String> nodes) {
+    private void sendMessageApi(Collection<String> nodes, String send, String chargingsend) {
         for (String node : nodes) {
             Wearable.MessageApi.sendMessage(
-                    mGoogleApiClient, node, batteryLevel, charging.getBytes()).setResultCallback(
+                    mGoogleApiClient, node, send, chargingsend.getBytes()).setResultCallback(
                     new ResultCallback<MessageApi.SendMessageResult>() {
                         @Override
                         public void onResult(MessageApi.SendMessageResult sendMessageResult) {
@@ -109,23 +115,33 @@ public class BatteryService extends Service {
     }
 
     private void sendBatteryStatus() {
-        batteryLevel = String.valueOf(getBatteryLevel());
-        charging = String.valueOf(isConnected(this));
-        getNodes();
+        batteryLevel = getBatteryLevel();
+
+        if(isConnected(this)){
+            charging = "Charging";
+
+        }
+        else{
+            charging = "Not Charging";
+
+        }
+        getNodes(charging,null);
+        getNodes("battery",batteryLevel);
     }
-    public float getBatteryLevel() {
+    public String getBatteryLevel() {
         Intent batteryIntent = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
         int level = batteryIntent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryIntent.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
         // Error checking that probably isn't needed but I added just in case.
         if(level == -1 || scale == -1) {
-            return 50.0f;
+            return "error";
         }
 
 
-        float battery = ((float)level / (float)scale) * 100.0f;
-        return battery;
+        float batteryLevelWithDecimals = ((float)level / (float)scale) * 100.0f;
+        String battery = String.format("%.0f", batteryLevelWithDecimals);
+        return battery ;
     }
     public static boolean isConnected(Context context) {
         Intent intent = context.registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
@@ -142,7 +158,21 @@ public class BatteryService extends Service {
     @Override
     public void onStart(Intent intent, int startid) {
         Toast.makeText(this, "Service started by user.", Toast.LENGTH_LONG).show();
-        sendBatteryStatus();
+        new Thread(new Runnable(){
+            public void run() {
+                // TODO Auto-generated method stub
+                while(true)
+                {
+                    try {
+                        Thread.sleep(60000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    sendBatteryStatus();
+                }
+
+            }
+        }).start();
     }
 
 }
