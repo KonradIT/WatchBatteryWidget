@@ -1,5 +1,7 @@
 package com.chernowii.watchbatterywidget;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -50,6 +52,18 @@ public class Listener extends WearableListenerService {
             String chargingstatus = messageEvent.getPath();
             remoteViews.setTextViewText(R.id.charging, chargingstatus);
             int batterystatus = Integer.parseInt(new String(messageEvent.getData()));
+            if (batterystatus == 100){
+                Notification n  = new Notification.Builder(this)
+                        .setContentTitle("Watch Battery Fully Charged!")
+
+                        .setSmallIcon(R.mipmap.ic_launcher).build();
+
+
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+
+                notificationManager.notify(0, n);
+            }
             remoteViews.setTextViewText(R.id.battery, batterystatus + "%");
             SharedPreferences settings;
             SharedPreferences.Editor editor;
