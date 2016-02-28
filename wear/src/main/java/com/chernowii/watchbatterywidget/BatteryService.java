@@ -125,8 +125,7 @@ public class BatteryService extends Service {
             charging = "Not Charging";
 
         }
-        getNodes(charging,null);
-        getNodes("battery",batteryLevel);
+        getNodes(charging,batteryLevel);
     }
     public String getBatteryLevel() {
         Intent batteryIntent = registerReceiver(null, new IntentFilter(Intent.ACTION_BATTERY_CHANGED));
