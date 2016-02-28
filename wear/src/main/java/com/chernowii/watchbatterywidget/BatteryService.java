@@ -52,7 +52,7 @@ public class BatteryService extends Service {
                     }
                 }).build();
         mGoogleApiClient.connect();
-        Toast.makeText(this, "Sending battery status!", Toast.LENGTH_LONG).show();
+
         sendBatteryStatus();
 
         new Thread(new Runnable(){
@@ -156,7 +156,7 @@ public class BatteryService extends Service {
 
     @Override
     public void onStart(Intent intent, int startid) {
-        Toast.makeText(this, "Service started by user.", Toast.LENGTH_LONG).show();
+
         new Thread(new Runnable(){
             public void run() {
                 // TODO Auto-generated method stub
