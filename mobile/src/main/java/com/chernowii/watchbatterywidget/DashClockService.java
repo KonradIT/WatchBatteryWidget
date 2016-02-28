@@ -15,7 +15,7 @@ import com.google.android.apps.dashclock.api.ExtensionData;
 public class DashClockService extends DashClockExtension {
     public static final String DATA = "DATA";
     public static final String battery_data = "battery";
-    public static final String charging_data = "battery";
+    public static final String charging_data = "charging";
 
     protected void onUpdateData(int reason) {
         String batteryLevel;

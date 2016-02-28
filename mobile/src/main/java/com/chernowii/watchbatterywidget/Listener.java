@@ -21,7 +21,7 @@ import java.util.Arrays;
 public class Listener extends WearableListenerService {
     public static final String DATA = "DATA";
     public static final String battery_data = "battery";
-    public static final String charging_data = "battery";
+    public static final String charging_data = "charging";
     @Override
     public void onMessageReceived(MessageEvent messageEvent) {
         //Toast.makeText(getApplicationContext(),messageEvent.getPath(),Toast.LENGTH_SHORT).show();
