@@ -17,7 +17,11 @@ public class DashClockService extends DashClockExtension {
     public static final String battery_data = "battery";
     public static final String charging_data = "charging";
 
-    protected void onUpdateData(int reason) {
+    public final void updateData() {
+        onUpdateData(UPDATE_REASON_CONTENT_CHANGED);
+    }
+
+    public void onUpdateData(int reason) {
         String batteryLevel;
         String charging;
         SharedPreferences settings;
@@ -31,4 +35,5 @@ public class DashClockService extends DashClockExtension {
                 .expandedTitle("Battery Level: " + batteryLevel + "%")
                 .expandedBody(charging));
     }
+
 }
